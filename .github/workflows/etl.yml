@@ -1,0 +1,22 @@
+name: Nightly ETL
+on:
+  schedule:
+    - cron: "17 3 * * *"
+  workflow_dispatch:
+
+jobs:
+  run:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+      - run: pip install -r requirements.txt
+      - env:
+          DB_HOST: ${{ secrets.DB_HOST }}
+          DB_PORT: ${{ secrets.DB_PORT }}
+          DB_NAME: ${{ secrets.DB_NAME }}
+          DB_ADMIN_USER: ${{ secrets.DB_ADMIN_USER }}
+          DB_ADMIN_PW: ${{ secrets.DB_ADMIN_PW }}
+        run: python etl/load_freedom_house.py
