@@ -30,10 +30,11 @@ st.divider()
 
 @st.cache_resource(show_spinner=False)
 def get_engine():
-    """Create database connection with connection pooling."""
+    """Create database connection with connection pooling (SSL for Supabase)."""
     url = (
         f"postgresql+psycopg2://{os.environ['DB_USER']}:{os.environ['DB_PASSWORD']}"
         f"@{os.environ['DB_HOST']}:{os.environ.get('DB_PORT','5432')}/{os.environ['DB_NAME']}"
+        f"?sslmode=require"
     )
     return create_engine(url, pool_pre_ping=True)
 

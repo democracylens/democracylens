@@ -10,10 +10,11 @@ from collections import defaultdict
 
 load_dotenv(override=True)
 
-# Database connection
+# Database connection (with SSL for Supabase)
 engine = create_engine(
     f"postgresql+psycopg2://{os.environ['DB_ADMIN_USER']}:{os.environ['DB_ADMIN_PW']}@"
-    f"{os.environ['DB_HOST']}:{os.environ.get('DB_PORT','5432')}/{os.environ['DB_NAME']}",
+    f"{os.environ['DB_HOST']}:{os.environ.get('DB_PORT','5432')}/{os.environ['DB_NAME']}"
+    f"?sslmode=require",
     pool_pre_ping=True,
 )
 
