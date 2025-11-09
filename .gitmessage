@@ -1,0 +1,33 @@
+# Democracy Lens Project Commit Template
+#
+# Use this format for commit messages:
+# <type>: <subject>
+#
+# Types:
+#   feat:     New feature
+#   fix:      Bug fix
+#   docs:     Documentation changes
+#   style:    Formatting, missing semicolons, etc.
+#   refactor: Code restructuring without changing behavior
+#   test:     Adding or updating tests
+#   chore:    Maintenance tasks, dependencies, etc.
+#   data:     Data updates or ETL changes
+#
+# Example:
+#   feat: Add V-Dem democracy indices to dashboard
+#   fix: Correct date parsing in Freedom House ETL
+#   docs: Update deployment instructions for Neon
+#   data: Update Freedom House scores through 2024
+#
+# Guidelines:
+# - Keep subject line under 50 characters
+# - Use imperative mood ("Add feature" not "Added feature")
+# - Don't end subject line with a period
+# - Use the body to explain what and why (not how)
+# - Maintain project anonymity (no personal references)
+#
+# Body (optional, leave blank line after subject):
+
+
+# Maintained by: Democracy Lens Project
+# Contact: GitHub Issues

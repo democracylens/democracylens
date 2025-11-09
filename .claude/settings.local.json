@@ -1,0 +1,12 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(tree:*)",
+      "Bash(python init_db.py:*)",
+      "Bash(py init_db.py:*)",
+      "Bash(py -m pip install:*)"
+    ],
+    "deny": [],
+    "ask": []
+  }
+}
