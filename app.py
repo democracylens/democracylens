@@ -31,9 +31,16 @@ st.divider()
 @st.cache_resource(show_spinner=False)
 def get_engine():
     """Create database connection with connection pooling (SSL for Supabase)."""
+    # Use st.secrets for Streamlit Cloud, fallback to os.environ for local dev
+    def get_secret(key, default=None):
+        try:
+            return st.secrets.get(key, os.environ.get(key, default))
+        except:
+            return os.environ.get(key, default)
+
     url = (
-        f"postgresql+psycopg2://{os.environ['DB_USER']}:{os.environ['DB_PASSWORD']}"
-        f"@{os.environ['DB_HOST']}:{os.environ.get('DB_PORT','5432')}/{os.environ['DB_NAME']}"
+        f"postgresql+psycopg2://{get_secret('DB_USER')}:{get_secret('DB_PASSWORD')}"
+        f"@{get_secret('DB_HOST')}:{get_secret('DB_PORT', '5432')}/{get_secret('DB_NAME')}"
         f"?sslmode=require"
     )
     return create_engine(url, pool_pre_ping=True)
