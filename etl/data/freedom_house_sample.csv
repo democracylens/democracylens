@@ -1,0 +1,151 @@
+country_name,iso_code,metric_name,metric_value,date
+United States,USA,Civil Liberties,86,2015-01-01
+United States,USA,Political Rights,89,2015-01-01
+United States,USA,Freedom Score,87.5,2015-01-01
+United States,USA,Civil Liberties,86,2016-01-01
+United States,USA,Political Rights,89,2016-01-01
+United States,USA,Freedom Score,87.5,2016-01-01
+United States,USA,Civil Liberties,86,2017-01-01
+United States,USA,Political Rights,86,2017-01-01
+United States,USA,Freedom Score,86,2017-01-01
+United States,USA,Civil Liberties,83,2018-01-01
+United States,USA,Political Rights,86,2018-01-01
+United States,USA,Freedom Score,84.5,2018-01-01
+United States,USA,Civil Liberties,83,2019-01-01
+United States,USA,Political Rights,86,2019-01-01
+United States,USA,Freedom Score,84.5,2019-01-01
+United States,USA,Civil Liberties,83,2020-01-01
+United States,USA,Political Rights,83,2020-01-01
+United States,USA,Freedom Score,83,2020-01-01
+United States,USA,Civil Liberties,83,2021-01-01
+United States,USA,Political Rights,83,2021-01-01
+United States,USA,Freedom Score,83,2021-01-01
+United States,USA,Civil Liberties,83,2022-01-01
+United States,USA,Political Rights,83,2022-01-01
+United States,USA,Freedom Score,83,2022-01-01
+United States,USA,Civil Liberties,83,2023-01-01
+United States,USA,Political Rights,83,2023-01-01
+United States,USA,Freedom Score,83,2023-01-01
+United States,USA,Civil Liberties,83,2024-01-01
+United States,USA,Political Rights,83,2024-01-01
+United States,USA,Freedom Score,83,2024-01-01
+United Kingdom,GBR,Civil Liberties,93,2015-01-01
+United Kingdom,GBR,Political Rights,95,2015-01-01
+United Kingdom,GBR,Freedom Score,94,2015-01-01
+United Kingdom,GBR,Civil Liberties,93,2016-01-01
+United Kingdom,GBR,Political Rights,95,2016-01-01
+United Kingdom,GBR,Freedom Score,94,2016-01-01
+United Kingdom,GBR,Civil Liberties,93,2017-01-01
+United Kingdom,GBR,Political Rights,95,2017-01-01
+United Kingdom,GBR,Freedom Score,94,2017-01-01
+United Kingdom,GBR,Civil Liberties,92,2018-01-01
+United Kingdom,GBR,Political Rights,95,2018-01-01
+United Kingdom,GBR,Freedom Score,93.5,2018-01-01
+United Kingdom,GBR,Civil Liberties,93,2019-01-01
+United Kingdom,GBR,Political Rights,95,2019-01-01
+United Kingdom,GBR,Freedom Score,94,2019-01-01
+United Kingdom,GBR,Civil Liberties,93,2020-01-01
+United Kingdom,GBR,Political Rights,93,2020-01-01
+United Kingdom,GBR,Freedom Score,93,2020-01-01
+United Kingdom,GBR,Civil Liberties,93,2021-01-01
+United Kingdom,GBR,Political Rights,93,2021-01-01
+United Kingdom,GBR,Freedom Score,93,2021-01-01
+United Kingdom,GBR,Civil Liberties,91,2022-01-01
+United Kingdom,GBR,Political Rights,93,2022-01-01
+United Kingdom,GBR,Freedom Score,92,2022-01-01
+United Kingdom,GBR,Civil Liberties,91,2023-01-01
+United Kingdom,GBR,Political Rights,93,2023-01-01
+United Kingdom,GBR,Freedom Score,92,2023-01-01
+United Kingdom,GBR,Civil Liberties,91,2024-01-01
+United Kingdom,GBR,Political Rights,93,2024-01-01
+United Kingdom,GBR,Freedom Score,92,2024-01-01
+Germany,DEU,Civil Liberties,94,2015-01-01
+Germany,DEU,Political Rights,95,2015-01-01
+Germany,DEU,Freedom Score,94.5,2015-01-01
+Germany,DEU,Civil Liberties,94,2016-01-01
+Germany,DEU,Political Rights,95,2016-01-01
+Germany,DEU,Freedom Score,94.5,2016-01-01
+Germany,DEU,Civil Liberties,94,2017-01-01
+Germany,DEU,Political Rights,95,2017-01-01
+Germany,DEU,Freedom Score,94.5,2017-01-01
+Germany,DEU,Civil Liberties,94,2018-01-01
+Germany,DEU,Political Rights,94,2018-01-01
+Germany,DEU,Freedom Score,94,2018-01-01
+Germany,DEU,Civil Liberties,94,2019-01-01
+Germany,DEU,Political Rights,94,2019-01-01
+Germany,DEU,Freedom Score,94,2019-01-01
+Germany,DEU,Civil Liberties,94,2020-01-01
+Germany,DEU,Political Rights,94,2020-01-01
+Germany,DEU,Freedom Score,94,2020-01-01
+Germany,DEU,Civil Liberties,93,2021-01-01
+Germany,DEU,Political Rights,94,2021-01-01
+Germany,DEU,Freedom Score,93.5,2021-01-01
+Germany,DEU,Civil Liberties,93,2022-01-01
+Germany,DEU,Political Rights,94,2022-01-01
+Germany,DEU,Freedom Score,93.5,2022-01-01
+Germany,DEU,Civil Liberties,93,2023-01-01
+Germany,DEU,Political Rights,94,2023-01-01
+Germany,DEU,Freedom Score,93.5,2023-01-01
+Germany,DEU,Civil Liberties,93,2024-01-01
+Germany,DEU,Political Rights,94,2024-01-01
+Germany,DEU,Freedom Score,93.5,2024-01-01
+India,IND,Civil Liberties,60,2015-01-01
+India,IND,Political Rights,77,2015-01-01
+India,IND,Freedom Score,68.5,2015-01-01
+India,IND,Civil Liberties,60,2016-01-01
+India,IND,Political Rights,77,2016-01-01
+India,IND,Freedom Score,68.5,2016-01-01
+India,IND,Civil Liberties,60,2017-01-01
+India,IND,Political Rights,77,2017-01-01
+India,IND,Freedom Score,68.5,2017-01-01
+India,IND,Civil Liberties,58,2018-01-01
+India,IND,Political Rights,75,2018-01-01
+India,IND,Freedom Score,66.5,2018-01-01
+India,IND,Civil Liberties,55,2019-01-01
+India,IND,Political Rights,71,2019-01-01
+India,IND,Freedom Score,63,2019-01-01
+India,IND,Civil Liberties,55,2020-01-01
+India,IND,Political Rights,67,2020-01-01
+India,IND,Freedom Score,61,2020-01-01
+India,IND,Civil Liberties,54,2021-01-01
+India,IND,Political Rights,67,2021-01-01
+India,IND,Freedom Score,60.5,2021-01-01
+India,IND,Civil Liberties,54,2022-01-01
+India,IND,Political Rights,66,2022-01-01
+India,IND,Freedom Score,60,2022-01-01
+India,IND,Civil Liberties,54,2023-01-01
+India,IND,Political Rights,66,2023-01-01
+India,IND,Freedom Score,60,2023-01-01
+India,IND,Civil Liberties,54,2024-01-01
+India,IND,Political Rights,66,2024-01-01
+India,IND,Freedom Score,60,2024-01-01
+Brazil,BRA,Civil Liberties,71,2015-01-01
+Brazil,BRA,Political Rights,81,2015-01-01
+Brazil,BRA,Freedom Score,76,2015-01-01
+Brazil,BRA,Civil Liberties,71,2016-01-01
+Brazil,BRA,Political Rights,79,2016-01-01
+Brazil,BRA,Freedom Score,75,2016-01-01
+Brazil,BRA,Civil Liberties,68,2017-01-01
+Brazil,BRA,Political Rights,79,2017-01-01
+Brazil,BRA,Freedom Score,73.5,2017-01-01
+Brazil,BRA,Civil Liberties,68,2018-01-01
+Brazil,BRA,Political Rights,79,2018-01-01
+Brazil,BRA,Freedom Score,73.5,2018-01-01
+Brazil,BRA,Civil Liberties,68,2019-01-01
+Brazil,BRA,Political Rights,77,2019-01-01
+Brazil,BRA,Freedom Score,72.5,2019-01-01
+Brazil,BRA,Civil Liberties,67,2020-01-01
+Brazil,BRA,Political Rights,76,2020-01-01
+Brazil,BRA,Freedom Score,71.5,2020-01-01
+Brazil,BRA,Civil Liberties,67,2021-01-01
+Brazil,BRA,Political Rights,75,2021-01-01
+Brazil,BRA,Freedom Score,71,2021-01-01
+Brazil,BRA,Civil Liberties,67,2022-01-01
+Brazil,BRA,Political Rights,75,2022-01-01
+Brazil,BRA,Freedom Score,71,2022-01-01
+Brazil,BRA,Civil Liberties,69,2023-01-01
+Brazil,BRA,Political Rights,77,2023-01-01
+Brazil,BRA,Freedom Score,73,2023-01-01
+Brazil,BRA,Civil Liberties,69,2024-01-01
+Brazil,BRA,Political Rights,77,2024-01-01
+Brazil,BRA,Freedom Score,73,2024-01-01

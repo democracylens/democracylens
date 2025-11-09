@@ -6,7 +6,10 @@ __pycache__/
 # Streamlit
 .streamlit/
 # Data
+# Ignore CSV files by default
 etl/data/*.csv
+# But allow sample data to be committed
+!etl/data/freedom_house_sample.csv
 # OS
 .DS_Store
 Thumbs.db
