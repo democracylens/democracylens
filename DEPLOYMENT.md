@@ -4,71 +4,63 @@ This checklist guides you through deploying Democracy Lens to production.
 
 ## Pre-Deployment Setup
 
-### 1. Supabase Database Setup
+### 1. Neon Database Setup
 
-- [x] Create a Supabase account at [supabase.com](https://supabase.com) (use project email, not personal)
+- [x] Create a Neon account at [neon.tech](https://neon.tech) (can use GitHub OAuth)
 - [x] Create a new project called "democracylens"
-- [x] Choose region: US East (or closest to your target audience)
-- [x] Set a strong database password (save this securely!)
-- [x] Wait for project to provision (~2 minutes)
-- [x] Go to Settings → Database → Connection string
-- [x] Copy the URI connection string
+- [x] Choose region: AWS US East 1 (or closest to your target audience)
+- [x] Select Postgres version: 17 (latest)
+- [x] Disable Neon Auth (not needed for this project)
+- [x] Wait for project to provision (~30 seconds)
+- [x] In Connection Details, turn OFF "Connection pooling" toggle
+- [x] Copy the connection string
 - [x] Note down:
-  - Host: `db.mgnvookdlrxklhiczxjw.supabase.co`
-  - Database: `postgres`
-  - User: `postgres`
-  - Port: `6543` (Session Pooler - IPv4 compatible) or `5432` (Direct - IPv6 only)
-  - Password: (saved securely)
+  - Host: `ep-odd-boat-ahc72i13.c-3.us-east-1.aws.neon.tech`
+  - Database: `neondb`
+  - User: `neondb_owner`
+  - Port: `5432`
+  - Password: (from connection string)
 
-**IMPORTANT - IPv6 Requirement**: Supabase database connections require IPv6. If your local network is IPv4-only, you won't be able to connect directly from your machine. Use **Option A** (SQL Editor) below instead.
+**Why Neon over Supabase**: Neon provides IPv4 support on the free tier, which ensures compatibility with GitHub Actions, Streamlit Cloud, and local IPv4-only networks. Supabase's free tier is IPv6-only, which causes connectivity issues with many cloud platforms.
 
 ### 2. Initialize Database
 
-**Option A: Using Supabase SQL Editor (Recommended if IPv4-only network)**
+**Using Python Scripts (Works with Neon's IPv4 support)**
 
 - [x] Copy `.env.example` to `.env`
-- [x] Fill in Supabase database credentials in `.env`
-  - Use `DB_PORT=6543` for Session Pooler (though IPv4 compatibility still requires IPv6 DNS)
-- [x] Open Supabase SQL Editor: Settings → SQL Editor → New query
-- [x] Run the complete initialization script from `supabase_init.sql`:
-  - Creates `countries` and `metrics` tables
-  - Creates performance indexes
-  - Seeds 15 countries
-  - Creates read-only user `app_read`
-- [x] Verify: Check query results show 15 countries created
-- [x] Run the data loading script from `load_sample_data.sql`:
-  - Inserts 150 Freedom House metrics
-- [x] Verify: Check query results show metrics loaded successfully
-
-**Option B: Using Python Scripts Locally (Requires IPv6 connectivity)**
-
-- [ ] Copy `.env.example` to `.env`
-- [ ] Fill in Supabase database credentials in `.env`
-- [ ] Run: `python init_db.py`
-- [ ] Verify: Should see 15 countries seeded
-- [ ] Run: `python etl/load_freedom_house.py`
-- [ ] Verify: Should see 150 metrics inserted
+- [x] Fill in Neon database credentials in `.env`:
+  - `DB_HOST`: Neon hostname (from connection string)
+  - `DB_PORT`: `5432`
+  - `DB_NAME`: `neondb` (or your chosen database name)
+  - `DB_USER`: `neondb_owner` (from connection string)
+  - `DB_PASSWORD`: (from connection string)
+  - `DB_ADMIN_USER`: Same as `DB_USER`
+  - `DB_ADMIN_PW`: Same as `DB_PASSWORD`
+- [x] Run: `python init_db.py` (or apply `schema.sql` manually)
+- [x] Verify: Should see 15 countries seeded
+- [x] Run: `python etl/load_freedom_house.py`
+- [x] Verify: Should see 90-150 metrics inserted/updated
 
 ### 3. Test Locally
 
-**Note**: Local testing requires IPv6 connectivity. If you used Option A above (SQL Editor), skip local testing and proceed directly to cloud deployment (Step 9).
+**Note**: With Neon's IPv4 support, local testing works from any network.
 
-- [ ] Run: `streamlit run app.py`
-- [ ] Open: http://localhost:8501
-- [ ] Test: Select different countries
-- [ ] Test: View different metrics
-- [ ] Verify: Charts display correctly
-- [ ] Verify: Raw data table shows correct values
+- [x] Run: `streamlit run app.py`
+- [x] Open: http://localhost:8501
+- [x] Test: Select different countries
+- [x] Test: View different metrics
+- [x] Verify: Charts display correctly
+- [x] Verify: Raw data table shows correct values
 
 ## GitHub Setup
 
 ### 4. Create GitHub Repository
 
-- [ ] Create new repository (use project account, not personal)
-- [ ] Name: `democracylens`
-- [ ] Description: "Non-partisan democracy data dashboard"
-- [ ] Public repository
-- [ ] Don't initialize with README (we already have one)
+- [x] Create new repository (use project account, not personal)
+- [x] Name: `democracylens`
+- [x] Description: "Non-partisan democracy data dashboard"
+- [x] Public repository
+- [x] Don't initialize with README (we already have one)
 
 ### 5. Configure Git Identity
 
@@ -81,7 +73,7 @@ git config commit.template .gitmessage
 ### 6. Push Code to GitHub
 
 ```bash
-git remote add origin https://github.com/your-org/democracylens.git
+git remote add origin https://github.com/democracylens/democracylens.git
 git branch -M main
 git push -u origin main
 ```
@@ -91,59 +83,60 @@ git push -u origin main
 Go to: Repository → Settings → Secrets and variables → Actions
 
 Add these secrets:
-- [ ] `DB_HOST` - Your Supabase hostname (e.g., `db.mgnvookdlrxklhiczxjw.supabase.co`)
-- [ ] `DB_PORT` - `5432` (GitHub Actions has IPv6, so use Direct connection for better performance)
-- [ ] `DB_NAME` - `postgres`
-- [ ] `DB_ADMIN_USER` - `postgres`
-- [ ] `DB_ADMIN_PW` - Your Supabase database password
+- [x] `DB_HOST` - Your Neon hostname (e.g., `ep-xxx-xxx.c-3.us-east-1.aws.neon.tech`)
+- [x] `DB_PORT` - `5432`
+- [x] `DB_NAME` - `neondb` (or your chosen database name)
+- [x] `DB_ADMIN_USER` - `neondb_owner` (from Neon connection string)
+- [x] `DB_ADMIN_PW` - Your Neon database password (from connection string)
 
-**Note**: GitHub Actions runners have IPv6 connectivity, so they can use port `5432` (Direct connection) for better performance.
+**Note**: Neon provides IPv4 connectivity, ensuring GitHub Actions can reliably connect from any runner region.
 
 ### 8. Verify GitHub Actions
 
-- [ ] Go to Actions tab
-- [ ] Manually trigger "ETL Workflow"
-- [ ] Verify: Workflow completes successfully
-- [ ] Check: Logs show data inserted/updated
+- [x] Go to Actions tab
+- [x] Manually trigger "Nightly ETL" workflow
+- [x] Verify: Workflow completes successfully
+- [x] Check: Logs show data inserted/updated
 
 ## Streamlit Cloud Deployment
 
 ### 9. Deploy to Streamlit Cloud
 
-- [ ] Go to [share.streamlit.io](https://share.streamlit.io)
-- [ ] Sign in with GitHub (use project account)
-- [ ] Click "New app"
-- [ ] Select your repository: `democracylens`
-- [ ] Main file path: `app.py`
-- [ ] Click "Advanced settings"
+- [x] Go to [share.streamlit.io](https://share.streamlit.io)
+- [x] Sign in with GitHub (use project account)
+- [x] Click "New app"
+- [x] Select your repository: `democracylens`
+- [x] Main file path: `app.py`
+- [x] Click "Advanced settings"
+- [x] Set Python version: 3.11
 
 ### 10. Configure Streamlit Secrets
 
 In the "Secrets" section, add:
 
 ```toml
-DB_HOST = "db.mgnvookdlrxklhiczxjw.supabase.co"
+DB_HOST = "ep-odd-boat-ahc72i13.c-3.us-east-1.aws.neon.tech"
 DB_PORT = "5432"
-DB_NAME = "postgres"
-DB_USER = "app_read"
-DB_PASSWORD = "SecureReadOnlyPass2024!"
+DB_NAME = "neondb"
+DB_USER = "neondb_owner"
+DB_PASSWORD = "npg_gfA3SlbKezM7"
 ```
 
-**Note**: Streamlit Cloud has IPv6 connectivity, so use port `5432` (Direct connection) for better performance.
+**Note**: Neon's IPv4 support ensures reliable connectivity from Streamlit Cloud's infrastructure.
 
-- [ ] Save secrets
-- [ ] Click "Deploy"
-- [ ] Wait 2-3 minutes for deployment
+- [x] Save secrets
+- [x] Click "Deploy"
+- [x] Wait 2-3 minutes for deployment
 
 ### 11. Verify Deployment
 
-- [ ] Open the Streamlit URL (e.g., `democracylens.streamlit.app`)
-- [ ] Test: App loads successfully
-- [ ] Test: Countries dropdown populates
-- [ ] Test: Metrics display correctly
-- [ ] Test: Charts render properly
-- [ ] Check: Footer displays correctly
-- [ ] Check: Last updated date shows
+- [x] Open the Streamlit URL (e.g., `democracylens.streamlit.app`)
+- [x] Test: App loads successfully
+- [x] Test: Countries dropdown populates
+- [x] Test: Metrics display correctly
+- [x] Test: Charts render properly
+- [x] Check: Data source attribution shows
+- [x] Check: Last updated date shows
 
 ## Domain Configuration
 
