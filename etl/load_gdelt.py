@@ -103,6 +103,13 @@ COUNTRY_CODES = {
 # See: https://www.gdeltproject.org/data/lookups/CAMEO.eventcodes.txt
 # EventRootCode is column 28, values 1-20
 DEMOCRACY_EVENT_ROOT_CODES = {
+    # Cooperation events (democracy-relevant)
+    1: "Make public statement",
+    2: "Appeal",
+    8: "Yield",
+    9: "Investigate",
+
+    # Conflict events (protests, threats, violence)
     10: "Demand",
     11: "Disapprove",
     12: "Reject",
@@ -189,11 +196,11 @@ def download_and_parse_gdelt_file(file_url):
                         'IsRootEvent', 'EventCode', 'EventBaseCode', 'EventRootCode',
                         'QuadClass', 'GoldsteinScale', 'NumMentions', 'NumSources', 'NumArticles',
                         'AvgTone', 'Actor1Geo_Type', 'Actor1Geo_FullName', 'Actor1Geo_CountryCode',
-                        'Actor1Geo_ADM1Code', 'Actor1Geo_Lat', 'Actor1Geo_Long', 'Actor1Geo_FeatureID',
+                        'Actor1Geo_ADM1Code', 'Actor1Geo_ADM2Code', 'Actor1Geo_Lat', 'Actor1Geo_Long', 'Actor1Geo_FeatureID',
                         'Actor2Geo_Type', 'Actor2Geo_FullName', 'Actor2Geo_CountryCode',
-                        'Actor2Geo_ADM1Code', 'Actor2Geo_Lat', 'Actor2Geo_Long', 'Actor2Geo_FeatureID',
+                        'Actor2Geo_ADM1Code', 'Actor2Geo_ADM2Code', 'Actor2Geo_Lat', 'Actor2Geo_Long', 'Actor2Geo_FeatureID',
                         'ActionGeo_Type', 'ActionGeo_FullName', 'ActionGeo_CountryCode',
-                        'ActionGeo_ADM1Code', 'ActionGeo_Lat', 'ActionGeo_Long', 'ActionGeo_FeatureID',
+                        'ActionGeo_ADM1Code', 'ActionGeo_ADM2Code', 'ActionGeo_Lat', 'ActionGeo_Long', 'ActionGeo_FeatureID',
                         'DATEADDED', 'SOURCEURL'
                     ]
                 )
@@ -247,6 +254,10 @@ def transform_gdelt_event(row, country_cache):
     # Parse date (GDELT format: YYYYMMDD)
     date_str = str(row.get('SQLDATE', ''))
     try:
+        # Handle case where SQLDATE might be a float (pandas issue)
+        if '.' in date_str:
+            # If it's a float, try to convert to int first
+            date_str = str(int(float(date_str)))
         event_date = datetime.strptime(date_str, '%Y%m%d').date()
     except:
         return None
@@ -330,9 +341,6 @@ try:
                 event = transform_gdelt_event(raw_row, country_cache)
                 if not event:
                     stats["skipped"] += 1
-                    # Debug: show first few skipped events
-                    if stats["skipped"] <= 3:
-                        print(f"[DEBUG] Skipped event {idx}: Country code={raw_row.get('ActionGeo_CountryCode')}, Mapped={COUNTRY_CODES.get(raw_row.get('ActionGeo_CountryCode'))}")
                     continue
 
                 # Check if exists

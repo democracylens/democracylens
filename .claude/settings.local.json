@@ -9,7 +9,8 @@
       "WebFetch",
       "WebSearch",
       "Bash(python:*)",
-      "Bash(py etl/load_transparency_cpi.py:*)"
+      "Bash(py etl/load_transparency_cpi.py:*)",
+      "Bash(py:*)"
     ],
     "deny": [],
     "ask": []

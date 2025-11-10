@@ -1,4 +1,4 @@
-name: Nightly ETL
+name: Daily ETL (Annual Data Sources)
 on:
   schedule:
     - cron: "0 6 * * *"  # 6:00 AM UTC daily

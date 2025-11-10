@@ -1,0 +1,29 @@
+name: GDELT Events ETL (Every 6 Hours)
+
+on:
+  schedule:
+    # Run every 6 hours: 00:00, 06:00, 12:00, 18:00 UTC
+    - cron: "0 */6 * * *"
+  workflow_dispatch:  # Allow manual triggers
+
+jobs:
+  run:
+    runs-on: ubuntu-22.04
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+      - run: pip install -r requirements.txt
+
+      # GDELT Real-time Events ETL
+      - name: Load GDELT event data
+        env:
+          DB_HOST: ${{ secrets.DB_HOST }}
+          DB_PORT: ${{ secrets.DB_PORT }}
+          DB_NAME: ${{ secrets.DB_NAME }}
+          DB_ADMIN_USER: ${{ secrets.DB_ADMIN_USER }}
+          DB_ADMIN_PW: ${{ secrets.DB_ADMIN_PW }}
+          GDELT_DAYS_BACK: 1  # Only fetch last 24 hours to avoid duplicates
+        run: python etl/load_gdelt.py
+        continue-on-error: true
