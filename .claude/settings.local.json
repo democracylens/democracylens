@@ -5,7 +5,9 @@
       "Bash(python init_db.py:*)",
       "Bash(py init_db.py:*)",
       "Bash(py -m pip install:*)",
-      "Bash(git log:*)"
+      "Bash(git log:*)",
+      "WebFetch",
+      "WebSearch"
     ],
     "deny": [],
     "ask": []

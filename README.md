@@ -18,7 +18,7 @@ Democracy Lens makes global democracy data accessible, factual, and easy to expl
 ## Tech Stack
 
 - **Frontend:** Streamlit (hosted on Streamlit Community Cloud)
-- **Database:** PostgreSQL on Supabase (free tier)
+- **Database:** PostgreSQL on Neon (free tier)
 - **ETL:** Python scripts via GitHub Actions (nightly)
 - **Cost:** $0/month for MVP
 
@@ -45,7 +45,7 @@ democracylens/
 ### Prerequisites
 
 - Python 3.11+
-- PostgreSQL database (Supabase recommended)
+- PostgreSQL database (Neon recommended)
 - Git
 
 ### 1. Clone Repository
@@ -71,18 +71,18 @@ Copy `.env.example` to `.env` and fill in your database credentials:
 cp .env.example .env
 ```
 
-**For Supabase Database:**
+**For Neon Database:**
 
-Get your credentials from: Supabase Dashboard → Settings → Database
+Get your credentials from: Neon Console → Dashboard → Connection Details
 
 ```env
-DB_HOST=db.yourproject.supabase.co   # From connection info
+DB_HOST=ep-your-endpoint.region.aws.neon.tech  # From connection string
 DB_PORT=5432
-DB_NAME=postgres                      # Always 'postgres' for Supabase
+DB_NAME=neondb                        # Default database name
 DB_USER=app_read                      # Read-only user (create after init)
 DB_PASSWORD=your-readonly-password
-DB_ADMIN_USER=postgres                # Default admin user
-DB_ADMIN_PW=your-supabase-password   # From project settings
+DB_ADMIN_USER=neondb_owner            # Default admin user
+DB_ADMIN_PW=your-neon-password        # From project settings
 ```
 
 ### 4. Initialize Database
@@ -168,7 +168,7 @@ The ETL workflow runs nightly at 3:17 AM UTC.
 
 To configure:
 1. Go to repository Settings → Secrets → Actions
-2. Add each secret with your Supabase database credentials
+2. Add each secret with your Neon database credentials
 
 ## Development
 

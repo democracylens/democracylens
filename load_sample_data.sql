@@ -1,6 +1,6 @@
 -- Load Freedom House Sample Data
 -- Source: Freedom in the World
--- Run this in Supabase SQL Editor after running supabase_init.sql
+-- Note: This file is now deprecated - use Python ETL scripts instead (etl/load_freedom_house.py)
 
 INSERT INTO metrics (country_id, metric_name, metric_value, source, date)
 SELECT c.id, v.metric_name, v.metric_value, v.source, v.date::DATE

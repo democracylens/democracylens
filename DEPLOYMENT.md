@@ -199,13 +199,13 @@ In your domain registrar:
 
 Free monitoring options:
 - [ ] GitHub: Enable email notifications for failed Actions
-- [ ] Supabase: Monitor database usage in dashboard (Settings → Usage)
+- [ ] Neon: Monitor database usage in dashboard (Settings → Usage)
 - [ ] Streamlit: Check app health in dashboard
 
 ### 19. Document Credentials
 
 Store securely (use password manager):
-- [ ] Supabase database credentials
+- [ ] Neon database credentials
 - [ ] GitHub repository access
 - [ ] Streamlit Cloud login
 - [ ] Domain registrar login (if applicable)
@@ -213,70 +213,36 @@ Store securely (use password manager):
 
 ### 20. Create Backup Plan
 
-- [ ] Document: How to restore from Supabase backup (automatic daily backups on free tier)
-- [ ] Document: How to export data using Supabase SQL Editor
+- [ ] Document: How to restore from Neon backup (point-in-time recovery available)
+- [ ] Document: How to export data using SQL dump
 - [ ] Document: How to redeploy app if deleted
 - [ ] Document: Emergency contact procedures
 
 ## Troubleshooting
 
-### Cannot Connect to Supabase Locally (IPv4/IPv6 Issue)
-
-**Symptoms:**
-- `could not translate host name to address` error
-- DNS resolution fails for `db.*.supabase.co`
-- `ping` to Supabase host fails
-- Connection timeout errors
-
-**Root Cause**: Supabase database connections require IPv6. If your local network is IPv4-only, you cannot connect directly.
-
-**Solutions:**
-1. **Use Supabase SQL Editor** for database management (recommended)
-   - Run `supabase_init.sql` to initialize schema
-   - Run `load_sample_data.sql` to load data
-   - All database operations can be done via web interface
-2. **Deploy to cloud** where IPv6 is available
-   - GitHub Actions has IPv6 ✓
-   - Streamlit Cloud has IPv6 ✓
-3. **Enable IPv6** on your network (if available from ISP)
-   - Contact your ISP for IPv6 support
-   - Configure router for IPv6
-4. **Use IPv6 tunnel service** (advanced)
-   - Hurricane Electric Tunnel Broker
-   - Other IPv6 tunnel providers
-
-**Testing IPv6 connectivity:**
-```bash
-# Windows
-ping -6 2001:4860:4860::8888
-
-# Check if Supabase host resolves to IPv4
-nslookup -type=A db.mgnvookdlrxklhiczxjw.supabase.co
-```
-
 ### App Won't Load
 - Check Streamlit Cloud logs
 - Verify database connection string
 - Check that secrets are configured correctly
-- Verify Supabase project is active (not paused)
-- Check Supabase dashboard for any service issues
-- Ensure `DB_PORT = "5432"` in Streamlit secrets (not 6543)
+- Verify Neon project is active
+- Check Neon dashboard for any service issues
+- Ensure `DB_PORT = "5432"` in Streamlit secrets
 
 ### ETL Fails
 - Check GitHub Actions logs
 - Verify GitHub secrets are set
-- Ensure `DB_PORT` is set to `5432` for GitHub Actions (has IPv6)
-- Check Supabase database storage (free tier: 500 MB)
+- Ensure `DB_PORT` is set to `5432`
+- Check Neon database storage (free tier: 512 MB)
 - Verify database user has write permissions
-- If IPv4-only locally, use Supabase SQL Editor to test queries
+- Test queries locally or via Neon SQL Editor
 
 ### No Data in App
-- Use Supabase SQL Editor to check data:
+- Use Neon SQL Editor to check data:
   - `SELECT COUNT(*) FROM countries;` (should show 15)
   - `SELECT COUNT(*) FROM metrics;` (should show 150+)
-- Re-run `supabase_init.sql` if tables are missing
-- Re-run `load_sample_data.sql` if data is missing
-- Check Supabase Table Editor to inspect data visually
+- Re-run `init_db.py` if tables are missing
+- Re-run ETL scripts if data is missing
+- Check Neon console to inspect data visually
 
 ### Domain Not Working
 - Wait for DNS propagation (up to 48 hours)
@@ -308,57 +274,46 @@ After successful deployment:
 
 ## Lessons Learned
 
-### Session Date: 2025-01-09
+### Migration to Neon PostgreSQL (2025)
 
-**Key Findings:**
+**Key Decision: Neon over Supabase**
+- Migrated from Supabase to Neon for IPv4 support on free tier
+- Neon provides better compatibility with local development environments
+- No IPv6 requirement means easier local testing and development
+- Maintains zero-cost architecture while improving developer experience
 
-1. **IPv6 Requirement is Critical**
-   - Supabase database connections require IPv6 DNS resolution
-   - Port 6543 (Session Pooler) does NOT solve IPv4-only network issues
-   - IPv4-only networks cannot connect to Supabase databases at all
-   - Solution: Use Supabase SQL Editor for all local database operations
+### Session Date: 2025-01-09 (Original Supabase Setup)
 
-2. **SQL Editor as Primary Tool**
-   - Created `supabase_init.sql` for complete database initialization
-   - Created `load_sample_data.sql` for data loading
-   - SQL Editor approach works universally, regardless of network configuration
-   - Recommend SQL Editor as primary method in documentation
+**Historical Findings from Initial Supabase Deployment:**
 
-3. **Type Casting in PostgreSQL**
+1. **Type Casting in PostgreSQL**
    - Date strings must be explicitly cast with `::DATE` in VALUES clauses
    - UNION queries require consistent types across all branches (use `::text`)
    - PostgreSQL is strict about type matching
 
-4. **Emoji Encoding Issues**
+2. **Emoji Encoding Issues**
    - Windows console (cp1252) cannot display Unicode emojis in Python scripts
    - Replaced emojis with `[INFO]`, `[SUCCESS]`, `[ERROR]`, `[WARNING]` tags
    - Consider this for cross-platform compatibility
 
-5. **Cloud-First Architecture Works**
+3. **Cloud-First Architecture Works**
    - Local development limitations don't impact cloud deployment
-   - GitHub Actions (IPv6) ✓
-   - Streamlit Cloud (IPv6) ✓
+   - GitHub Actions and Streamlit Cloud both work reliably
    - This validates the zero-cost, cloud-first architecture
 
-6. **Environment Configuration**
+4. **Environment Configuration**
    - `.env` file created and configured
-   - Port 6543 documented but note IPv6 DNS still required
-   - Read-only user (`app_read`) successfully created
+   - Read-only user (`app_read`) created for security
    - Credentials documented securely
 
-**Completed Setup:**
-- ✅ Supabase project created: `democracylens`
-- ✅ Database schema initialized via SQL Editor
+**Current Setup (Neon):**
+- ✅ Neon project created: `democracylens`
+- ✅ Database schema initialized via Python scripts
 - ✅ 15 countries seeded
 - ✅ Read-only user `app_read` created
-- ✅ 150 Freedom House metrics loaded (2015-2024)
+- ✅ 150+ Freedom House metrics loaded (2015-2024)
 - ✅ `.env` file configured with credentials
-- ✅ IPv6 limitation documented and workaround provided
-
-**Next Steps:**
-- Deploy to Streamlit Cloud (has IPv6)
-- Configure GitHub Actions (has IPv6)
-- Test end-to-end workflow in cloud environment
+- ✅ IPv4 support enables local development
 
 ---
 

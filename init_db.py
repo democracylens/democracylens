@@ -2,7 +2,7 @@
 Database initialization script for Democracy Lens.
 Applies schema and seeds initial country data.
 
-Compatible with Supabase PostgreSQL (or any PostgreSQL 12+).
+Compatible with PostgreSQL 12+ (tested with Neon).
 Requires admin credentials configured in .env file.
 """
 
@@ -130,7 +130,7 @@ def main():
         print("[SUCCESS] Database initialization complete!")
         print("=" * 60)
         print("\nNext steps:")
-        print("  1. Create read-only user in Supabase SQL Editor (see DEPLOYMENT.md)")
+        print("  1. Create read-only user in Neon SQL Editor (see DEPLOYMENT.md)")
         print("  2. Run ETL script: python etl/load_freedom_house.py")
         print("  3. Start app: streamlit run app.py")
 

@@ -30,7 +30,7 @@ st.divider()
 
 @st.cache_resource(show_spinner=False)
 def get_engine():
-    """Create database connection with connection pooling (SSL for Supabase)."""
+    """Create database connection with connection pooling and SSL."""
     # Use st.secrets for Streamlit Cloud, fallback to os.environ for local dev
     def get_secret(key, default=None):
         try:
