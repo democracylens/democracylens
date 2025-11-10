@@ -6,7 +6,7 @@ A public, non-partisan data dashboard tracking democracy and governance indicato
 
 ## Overview
 
-Democracy Lens makes global democracy data accessible, factual, and easy to explore. The dashboard presents democratic health metrics from authoritative sources including Freedom House, V-Dem, and other public indices.
+Democracy Lens makes global democracy data accessible, factual, and easy to explore. The dashboard presents democratic health metrics from authoritative sources including Freedom House and the World Bank's Worldwide Governance Indicators.
 
 **Design Principles:**
 - Non-partisan, neutral presentation
@@ -206,10 +206,15 @@ Check logs for errors and verify data in the database.
 
 ## Data Sources
 
-- **Freedom House** - Freedom in the World annual survey (current)
-- **V-Dem** - Varieties of Democracy indices (planned)
-- **Polity Project** - Polity5 regime characteristics (planned)
-- **World Bank** - Governance indicators (planned)
+- **Freedom House** - Freedom in the World annual survey (1972-present)
+  - Political Rights, Civil Liberties, Freedom Score
+  - 195+ countries, updated annually
+- **World Bank WGI** - Worldwide Governance Indicators (1996-present)
+  - Voice & Accountability, Political Stability, Government Effectiveness
+  - Regulatory Quality, Rule of Law, Control of Corruption
+  - 214 economies, updated annually
+
+All data sources are free, open, and automatically updated nightly via GitHub Actions.
 
 ## Privacy & Security
 

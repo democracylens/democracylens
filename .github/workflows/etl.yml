@@ -35,14 +35,3 @@ jobs:
           DB_ADMIN_PW: ${{ secrets.DB_ADMIN_PW }}
         run: python etl/load_world_bank_wgi.py
         continue-on-error: true
-
-      # V-Dem ETL
-      - name: Load V-Dem data
-        env:
-          DB_HOST: ${{ secrets.DB_HOST }}
-          DB_PORT: ${{ secrets.DB_PORT }}
-          DB_NAME: ${{ secrets.DB_NAME }}
-          DB_ADMIN_USER: ${{ secrets.DB_ADMIN_USER }}
-          DB_ADMIN_PW: ${{ secrets.DB_ADMIN_PW }}
-        run: python etl/load_vdem.py
-        continue-on-error: true
