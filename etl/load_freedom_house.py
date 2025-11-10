@@ -79,16 +79,42 @@ def parse_freedom_house_excel(file_source, source_url):
         # Try to find the main data sheet
         # Freedom House uses different sheet names
         data_sheet = None
+
+        # Skip known metadata sheets
+        skip_sheets = ['index', 'contents', 'readme', 'about']
+
         for sheet_name in excel_file.sheet_names:
-            if any(keyword in sheet_name.lower() for keyword in ['country', 'data', 'ratings', 'fh']):
+            if sheet_name.lower() in skip_sheets:
+                continue
+            # Look for FIW (Freedom in the World) data sheets
+            if 'fiw' in sheet_name.lower() or 'country' in sheet_name.lower() or 'data' in sheet_name.lower():
                 data_sheet = sheet_name
                 break
 
+        # Fallback: use the second sheet if first is likely an index
         if not data_sheet:
-            data_sheet = excel_file.sheet_names[0]  # Use first sheet as fallback
+            if len(excel_file.sheet_names) > 1 and excel_file.sheet_names[0].lower() in skip_sheets:
+                data_sheet = excel_file.sheet_names[1]
+            else:
+                data_sheet = excel_file.sheet_names[0]
 
         print(f"[INFO] Using sheet: {data_sheet}")
-        df = pd.read_excel(file_source, sheet_name=data_sheet)
+
+        # Read first few rows to find where headers are
+        # Freedom House files often have title rows before the actual data
+        df_preview = pd.read_excel(file_source, sheet_name=data_sheet, nrows=10, header=None)
+
+        # Find the row where actual column headers are (look for "Country" or "Edition")
+        header_row = 0
+        for idx, row in df_preview.iterrows():
+            row_str = ' '.join([str(v) for v in row.values if pd.notna(v)]).lower()
+            print(f"[DEBUG] Row {idx}: {row_str[:100]}")  # Show first 100 chars
+            if ('country' in row_str and 'edition' in row_str) or ('country/territory' in row_str):
+                header_row = idx
+                print(f"[DEBUG] Found header row at: {idx}")
+                break
+
+        df = pd.read_excel(file_source, sheet_name=data_sheet, header=header_row)
 
         # Parse based on file type
         if 'All_data' in source_url:
@@ -109,6 +135,8 @@ def parse_freedom_house_excel(file_source, source_url):
 def parse_all_data_format(df):
     """Parse the comprehensive All_data file format."""
     print("[INFO] Parsing comprehensive format...")
+    print(f"[DEBUG] Columns found: {df.columns.tolist()[:10]}")  # Show first 10 columns
+    print(f"[DEBUG] Dataframe shape: {df.shape}")
 
     # The All_data format has columns: Country/Territory, Edition, Status, PR, CL, Total
     # We need to transform this into our standard format
