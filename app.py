@@ -120,6 +120,105 @@ try:
         if len(sources) == 1:
             st.caption(f"Data source: {sources[0]}")
 
+        # Democracy Pulse - Recent Events Section
+        st.divider()
+        st.subheader(f"📊 Democracy Pulse — {country}")
+        st.caption("Real-time democracy events from the last 90 days")
+
+        # Load recent events for this country
+        events_query = text("""
+            SELECT
+                e.event_date,
+                e.event_type,
+                e.sub_event_type,
+                e.disorder_type,
+                e.fatalities,
+                e.notes,
+                e.location_name,
+                e.source
+            FROM events e
+            JOIN countries c ON c.id = e.country_id
+            WHERE c.name = :country
+            AND e.event_date >= CURRENT_DATE - INTERVAL '90 days'
+            ORDER BY e.event_date DESC
+        """)
+
+        try:
+            events_df = pd.read_sql(events_query, engine, params={"country": country})
+
+            if not events_df.empty:
+                # Event summary metrics
+                col1, col2, col3, col4 = st.columns(4)
+
+                with col1:
+                    total_events = len(events_df)
+                    st.metric("Total Events", total_events)
+
+                with col2:
+                    protests = len(events_df[events_df.event_type == "Protests"])
+                    st.metric("Protests", protests)
+
+                with col3:
+                    riots = len(events_df[events_df.event_type == "Riots"])
+                    st.metric("Riots", riots)
+
+                with col4:
+                    total_fatalities = events_df.fatalities.sum()
+                    st.metric("Total Fatalities", int(total_fatalities))
+
+                # Event type breakdown
+                st.markdown("#### Event Type Breakdown")
+                event_counts = events_df.groupby('event_type').size().reset_index(name='count')
+                event_counts = event_counts.sort_values('count', ascending=False)
+                st.bar_chart(event_counts.set_index('event_type')['count'])
+
+                # Recent events timeline
+                st.markdown("#### Recent Events Timeline")
+
+                # Time period selector
+                time_period = st.radio(
+                    "Select time period",
+                    ["Last 30 days", "Last 90 days"],
+                    horizontal=True
+                )
+
+                days = 30 if time_period == "Last 30 days" else 90
+                filtered_events = events_df[
+                    pd.to_datetime(events_df.event_date) >=
+                    pd.Timestamp.now() - pd.Timedelta(days=days)
+                ]
+
+                if not filtered_events.empty:
+                    # Display events as expandable list
+                    for idx, event in filtered_events.iterrows():
+                        event_date = pd.to_datetime(event.event_date).strftime("%Y-%m-%d")
+                        event_type = event.event_type
+                        location = event.location_name or "Unknown location"
+                        fatalities = f" ({int(event.fatalities)} fatalities)" if event.fatalities > 0 else ""
+
+                        with st.expander(f"{event_date} • {event_type} • {location}{fatalities}"):
+                            st.write(f"**Type:** {event.event_type}")
+                            if event.sub_event_type:
+                                st.write(f"**Sub-type:** {event.sub_event_type}")
+                            if event.disorder_type:
+                                st.write(f"**Disorder Type:** {event.disorder_type}")
+                            st.write(f"**Location:** {location}")
+                            if event.fatalities > 0:
+                                st.write(f"**Fatalities:** {int(event.fatalities)}")
+                            if event.notes:
+                                st.write(f"**Details:** {event.notes}")
+                            st.caption(f"Source: {event.source}")
+                else:
+                    st.info(f"No events recorded in the last {days} days")
+
+            else:
+                st.info(f"No recent events available for {country}.")
+
+        except Exception as e:
+            # Events table might not exist yet
+            st.info("Real-time event tracking coming soon. Run database migration to enable.")
+            st.caption("Migration: `python migrations/apply_migration.py 001_add_events_table.sql`")
+
     else:
         st.warning(f"No data available for {country}. Please run the ETL script to load data.")
         st.code("python etl/load_freedom_house.py", language="bash")
@@ -134,7 +233,7 @@ st.divider()
 st.markdown("""
 <div style='text-align: center; color: #666; font-size: 0.9em;'>
     <p><strong>Democracy Lens Project</strong> • Non-partisan democracy data visualization</p>
-    <p>Data sources: Freedom House • Additional sources in development</p>
+    <p>Data sources: Freedom House • World Bank WGI</p>
     <p>This dashboard presents factual data without political commentary or advocacy.</p>
 </div>
 """, unsafe_allow_html=True)
